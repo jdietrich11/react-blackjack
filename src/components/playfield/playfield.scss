@@ -1,0 +1,57 @@
+.playfield {
+  width: 80%;
+  background-color: green;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 3rem;
+}
+
+.biding {
+  &__input {
+    height: 5rem;
+    width: 5rem;
+    margin-left: 1rem;
+    font-size: 2rem;
+    border: 3px solid black;
+    border-radius: 3px;
+  }
+}
+
+.user-inputs {
+  width: 45%;
+  display: flex;
+  justify-content: space-evenly;
+
+  & .btn {
+    height: 5rem;
+    width: 10rem;
+    border: 3px solid black;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+
+    &__end {
+      background-color: red;
+    }
+    &__draw {
+      background-color: blue;
+    }
+  }
+}
+
+.deck {
+  height: 15rem;
+  width: 10rem;
+  border: 3px solid black;
+  margin-right: 1rem;
+  border-radius: 3px;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  opacity: 1;
+}

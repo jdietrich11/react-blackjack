@@ -1,0 +1,178 @@
+////////////////////////////////////////
+// App
+
+////////////////////////////////////////
+//Header
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 6rem;
+  width: 80%;
+  max-width: 120rem;
+  margin: auto;
+  background-image: linear-gradient(to bottom right, orangered, purple);
+
+  &__logo {
+    height: 3rem;
+    width: 3rem;
+    background-color: black;
+    border-radius: 50%;
+  }
+  &__title {
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 200;
+    letter-spacing: 1px;
+  }
+  &__new-game {
+    border: 2px solid black;
+    padding: 1rem 1rem;
+    background-color: aqua;
+  }
+}
+
+.logo {
+  height: 3.5rem;
+  width: 3.5rem;
+  border-radius: 50%;
+  border: 2px solid black;
+}
+
+/////////////////////////////////////////////
+// DEALER HAND
+.dealer {
+  background-color: green;
+  width: 80%;
+  max-width: 120rem;
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 3rem 1rem;
+  min-height: 20rem;
+}
+
+/////////////////////////////////////////////
+// Playfeild
+.playfield {
+  width: 80%;
+  background-color: green;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 3rem;
+
+  position: relative;
+}
+
+.biding {
+  &__input {
+    height: 5rem;
+    width: 5rem;
+    margin-left: 1rem;
+    font-size: 2rem;
+    border: 3px solid black;
+    border-radius: 3px;
+  }
+}
+
+.user-inputs {
+  width: 45%;
+  display: flex;
+  justify-content: space-evenly;
+
+  & .btn {
+    height: 5rem;
+    width: 10rem;
+    border: 3px solid black;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+
+    &:hover {
+      transform: translateY(-1px);
+      cursor: pointer;
+    }
+
+    &:active {
+      box-shadow: none;
+    }
+
+    &__end {
+      background-color: red;
+    }
+    &__draw {
+      background-color: blue;
+    }
+  }
+}
+
+.deck {
+  height: 15rem;
+  width: 10rem;
+  border: 3px solid black;
+  margin-right: 1rem;
+  border-radius: 3px;
+
+  &__img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/////////////////////////////////////////////
+// Value counters
+.dealer__value,
+.player__value {
+  position: absolute;
+  color: white;
+  font-size: 4rem;
+}
+.dealer__value {
+  left: 20%;
+  top: 12%;
+}
+.player__value {
+  right: 30%;
+  bottom: 20%;
+}
+
+/////////////////////////////////////////////
+// Player HAND
+.player {
+  background-color: green;
+  width: 80%;
+  max-width: 120rem;
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 3rem 1rem;
+  min-height: 15rem;
+}
+
+.card {
+  max-height: 15rem;
+  max-width: 10rem;
+
+  &__img {
+    height: 100%;
+    width: 100%;
+  }
+
+  &:not(:last-child) {
+    margin-right: 2rem;
+  }
+}
+
+.hidden {
+  display: none;
+}

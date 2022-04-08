@@ -1,0 +1,19 @@
+.player {
+  background-color: green;
+  width: 80%;
+  max-width: 120rem;
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 3rem 1rem;
+}
+
+.card {
+  border: 3px solid black;
+  height: 15rem;
+  width: 10rem;
+
+  &:not(:last-child) {
+    margin-right: 2rem;
+  }
+}

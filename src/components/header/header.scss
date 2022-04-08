@@ -1,0 +1,35 @@
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 6rem;
+  width: 80%;
+  max-width: 120rem;
+  margin: auto;
+  background-image: linear-gradient(to bottom right, orangered, purple);
+
+  &__logo {
+    height: 3rem;
+    width: 3rem;
+    background-color: black;
+    border-radius: 50%;
+  }
+  &__title {
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 200;
+    letter-spacing: 1px;
+  }
+  &__new-game {
+    border: 2px solid black;
+    padding: 1rem 1rem;
+    background-color: aqua;
+  }
+}
+
+.logo {
+  height: 3.5rem;
+  width: 3.5rem;
+  border-radius: 50%;
+  border: 2px solid black;
+}
