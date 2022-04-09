@@ -66,14 +66,41 @@
   position: relative;
 }
 
-.biding {
+.bidding {
+  margin-left: 1rem;
+  &__bank {
+    font-size: 1rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
   &__input {
     height: 5rem;
     width: 5rem;
-    margin-left: 1rem;
     font-size: 2rem;
     border: 3px solid black;
     border-radius: 3px;
+    margin-bottom: 0.5rem;
+  }
+  &__submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+    width: 5rem;
+    border: 3px solid black;
+    border-radius: 50%;
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+    font-size: 3rem;
+
+    &:hover {
+      cursor: pointer;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      box-shadow: none;
+      transform: translateY(0);
+    }
   }
 }
 
@@ -92,6 +119,7 @@
     align-items: center;
     text-transform: uppercase;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+    z-index: 1;
 
     &:hover {
       transform: translateY(-1px);
@@ -104,9 +132,59 @@
 
     &__end {
       background-color: red;
+      z-index: 2;
+      &-option {
+        animation: phaseOut 3s linear;
+        animation-fill-mode: forwards;
+      }
     }
+
+    &__new {
+      animation: phaseIn 3s linear;
+      animation-fill-mode: backwards, forwards;
+      width: 90%;
+      font-size: 3rem;
+      border: 3px solid black;
+      font-size: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-transform: uppercase;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+      background-image: linear-gradient(to bottom right, red, purple, blue);
+
+      &:hover {
+        transform: translateY(-1px);
+        cursor: pointer;
+      }
+
+      &:active {
+        box-shadow: none;
+      }
+      &-option {
+        animation: phaseOut 3s linear;
+        animation-fill-mode: forwards;
+      }
+    }
+
     &__draw {
       background-color: blue;
+      opacity: 1;
+      z-index: 2;
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      &-option {
+        animation: phaseOut 3s linear;
+        animation-fill-mode: forwards;
+      }
     }
   }
 }
@@ -170,6 +248,47 @@ input[type='number']::-webkit-outer-spin-button {
 
   &:not(:last-child) {
     margin-right: 2rem;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+///////////////////////////////////
+// ANIMATIONS
+
+@keyframes phaseIn {
+  0% {
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+  1% {
+    visibility: visible;
+  }
+  50% {
+    width: 50%;
+    opacity: 0.5;
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+  }
+}
+@keyframes phaseOut {
+  0% {
+    opacity: 1;
+    width: 100%;
+  }
+  50% {
+    opacity: 0.5;
+    width: 50%;
+  }
+  100% {
+    width: 0;
+    opacity: 0;
+    display: none;
   }
 }
 

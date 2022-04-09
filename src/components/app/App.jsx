@@ -16,15 +16,21 @@ class App extends React.Component {
       PlayerValue: 0,
       DealerValue: 0,
       bid: 0,
+      currentBid: 0,
       bank: 100,
+      active: false,
+      submitted: false,
     };
 
-    this.handleClick = this.handleClick.bind(this);
     this.drawCard = this.drawCard.bind(this);
-    this.showCard = this.showCard.bind(this);
     this.endTurn = this.endTurn.bind(this);
     this.addCard = this.addCard.bind(this);
     this.playerCounter = this.playerCounter.bind(this);
+    this.checkVictor = this.checkVictor.bind(this);
+    this.newButton = this.newButton.bind(this);
+    this.biddingChange = this.biddingChange.bind(this);
+    this.biddingSubmit = this.biddingSubmit.bind(this);
+    this.newRound = this.newRound.bind(this);
   }
   componentDidMount() {
     axios
@@ -32,17 +38,47 @@ class App extends React.Component {
       .then((res) => this.setState({ DeckID: res.data.deck_id }));
   }
 
+  checkVictor() {
+    if (
+      this.state.PlayerValue > this.state.DealerValue &&
+      this.state.PlayerValue < 22
+    ) {
+      console.log('Player Win');
+      this.setState({
+        bank: this.state.bank + this.state.currentBid * 2,
+      });
+    }
+    if (
+      this.state.PlayerValue < this.state.DealerValue &&
+      this.state.DealerValue < 22
+    ) {
+      console.log('Player Lose');
+    }
+    if (this.state.PlayerValue > 21) {
+      console.log('player loss by overshoot');
+    }
+  }
+
   drawCard() {
-    axios
-      .get(
-        `https://deckofcardsapi.com/api/deck/${this.state.DeckID}/draw/?count=1`
-      )
-      .then((res) => this.addCard(res.data.cards[0]));
+    if (this.state.currentBid > 0) {
+      axios
+        .get(
+          `https://deckofcardsapi.com/api/deck/${this.state.DeckID}/draw/?count=1`
+        )
+        .then((res) => this.addCard(res.data.cards[0]));
+    }
+    if (this.state.currentBid <= 0) {
+      alert('Make a positive bid');
+    }
   }
 
   playerCounter() {
     if (this.state.PlayerValue > 21) {
-      console.log('lose');
+      console.log('this.clearTable');
+      this.setState({ active: !this.state.active });
+    }
+    if (this.state.PlayerValue < 22) {
+      console.log('Draw again?');
     }
   }
 
@@ -74,24 +110,76 @@ class App extends React.Component {
     }
   };
 
-  endTurn() {
-    axios
+  dealerDraw(props) {
+    let card = props;
+    if (
+      this.state.DealerValue < this.state.PlayerValue &&
+      this.state.DealerValue < 21
+    ) {
+      if (
+        card.value === 'KING' ||
+        card.value === 'QUEEN' ||
+        card.value === 'JACK'
+      ) {
+        this.setState({
+          DealerValue: this.state.DealerValue + 10,
+          DealerHand: [...this.state.DealerHand, card.code],
+        });
+      }
+      if (card.value === 'ACE') {
+        this.setState({
+          DealerValue: this.state.DealerValue + 10,
+          DealerHand: [...this.state.DealerHand, card.code],
+        });
+        this.checkVictor();
+      }
+      if (Number.isInteger(Number(card.value))) {
+        this.setState({
+          DealerValue: this.state.DealerValue + Number(card.value),
+          DealerHand: [...this.state.DealerHand, card.code],
+        });
+        this.checkVictor();
+      }
+    }
+  }
+
+  async endTurn() {
+    await axios
       .get(
         `https://deckofcardsapi.com/api/deck/${this.state.DeckID}/draw/?count=1`
       )
-      .then((res) =>
-        this.setState({
-          DealerHand: [...this.state.DealerHand, res.data.cards[0].code],
-        })
-      );
+      .then((res) => this.dealerDraw(res.data.cards[0]));
+    this.endTurn();
   }
 
-  handleClick() {
-    console.log(this.state.DeckID);
+  newButton() {
+    console.log('WHYYYY');
+    this.setState({ active: !this.state.active });
   }
 
-  showCard() {
-    console.log(this.state.PlayerHand);
+  newRound() {
+    this.setState({
+      active: !this.state.active,
+      PlayerHand: [],
+      DealerHand: [],
+      PlayerValue: 0,
+      DealerValue: 0,
+      bid: 0,
+      currentBid: 0,
+      submitted: false,
+    });
+  }
+
+  biddingChange(e) {
+    this.setState({ bid: e.target.value });
+  }
+  biddingSubmit(e) {
+    this.setState({
+      currentBid: this.state.bid,
+      bank: this.state.bank - Number(this.state.bid),
+      submitted: true,
+    });
+    console.log(this.state.bid);
   }
 
   render() {
@@ -176,17 +264,53 @@ class App extends React.Component {
           <div className='bidding'>
             <div className='bidding__bank'>BANK: {this.state.bank}</div>
             <input
-              className='biding__input'
+              className={this.state.submitted ? 'hidden' : 'bidding__input'}
               type='number'
               value={this.state.bid}
+              onChange={this.biddingChange}
+              onSubmit={this.biddingSubmit}
             ></input>
+            <div
+              className={this.state.submitted ? 'hidden' : 'bidding__submit'}
+              onClick={this.biddingSubmit}
+            >
+              &#10003;
+            </div>
           </div>
           <div className='user-inputs'>
-            <button className='btn btn__draw' onClick={this.drawCard}>
+            <button
+              className={
+                this.state.active
+                  ? 'btn btn__draw btn__draw-option'
+                  : 'btn btn__draw'
+              }
+              onClick={this.drawCard}
+            >
               Draw
             </button>
-            <button className='btn btn__end' onClick={this.endTurn}>
-              End
+            <button
+              className={
+                !this.state.active ? 'btn__new btn__new-option' : 'btn__new'
+              }
+              onClick={() => {
+                this.newButton();
+                this.newRound();
+              }}
+            >
+              New Game?
+            </button>
+            <button
+              className={
+                this.state.active
+                  ? 'btn btn__end btn__end-option'
+                  : 'btn btn__end'
+              }
+              onClick={() => {
+                this.endTurn();
+                this.newButton();
+              }}
+            >
+              END
             </button>
           </div>
           <div className='deck'>
